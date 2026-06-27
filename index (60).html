@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>На Сьомому Небі — Кафе при Церкві Спасіння</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FDF6EC;
+    --warm-white: #FFFDF9;
+    --gold: #C8922A;
+    --gold-light: #E8B84B;
+    --gold-pale: #F5E6C8;
+    --brown: #3D2B1F;
+    --brown-mid: #7A5C3E;
+    --brown-light: #B8956A;
+    --text: #2A1A0E;
+    --text-mid: #5A3D28;
+    --border: #E8D4B0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, #1a0f08 0%, #3D2B1F 50%, #5C3A22 100%);
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 40px 20px; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400&q=80');
+    background-size: cover; background-position: center;
+    opacity: 0.18;
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-badge {
+    background: var(--gold); color: white;
+    font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; padding: 6px 18px;
+    border-radius: 100px; margin-bottom: 24px; display: inline-block;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 8vw, 5.5rem); font-weight: 900;
+    color: white; line-height: 1.05; margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--gold-light); }
+  .hero-tagline {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: var(--gold-pale); margin-bottom: 8px;
+  }
+  .hero-church {
+    font-size: 0.8rem; color: rgba(255,255,255,0.5);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    padding: 14px 28px; border-radius: 12px;
+    font-weight: 600; font-size: 0.95rem; cursor: pointer;
+    border: none; transition: all 0.2s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-gold { background: var(--gold); color: white; }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,146,42,0.4); }
+  .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4); }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+  /* NAV */
+  .sticky-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: white; box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    padding: 0 20px; overflow-x: auto; white-space: nowrap;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .nav-inner { display: inline-flex; gap: 4px; padding: 10px 0; min-width: max-content; }
+  .nav-btn {
+    padding: 7px 14px; border-radius: 100px; border: none;
+    background: transparent; font-size: 0.82rem; font-weight: 500;
+    color: var(--text-mid); cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .nav-btn:hover, .nav-btn.active { background: var(--gold); color: white; }
+  .nav-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* SECTION */
+  .section-wrap { padding: 60px 20px; max-width: 1140px; margin: 0 auto; }
+  .section-head { display: flex; align-items: center; gap: 16px; margin-bottom: 36px; }
+  .section-icon {
+    width: 52px; height: 52px; background: var(--gold);
+    border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .section-icon svg { width: 26px; height: 26px; fill: white; }
+  .section-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 700; color: var(--brown);
+  }
+  .section-head p { font-size: 0.9rem; color: var(--brown-light); margin-top: 3px; }
+
+  /* MENU CARDS */
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+  .menu-card {
+    background: white; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(61,43,31,0.07);
+    transition: all 0.25s; cursor: pointer;
+    border: 2px solid transparent; position: relative;
+  }
+  .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(61,43,31,0.13); border-color: var(--gold-light); }
+  .menu-card.selected { border-color: var(--gold); }
+  .menu-card.selected::after {
+    content: '✓'; position: absolute; top: 10px; right: 10px;
+    width: 28px; height: 28px; background: var(--gold); color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: 700;
+  }
+  .card-img {
+    width: 100%; height: 170px; object-fit: cover;
+    background: linear-gradient(135deg, var(--gold-pale), var(--border));
+    display: block;
+  }
+  .card-img-icon {
+    width: 100%; height: 170px;
+    background: linear-gradient(135deg, var(--gold-pale) 0%, #f0dfc0 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-img-icon svg { width: 64px; height: 64px; opacity: 0.7; }
+  .card-body { padding: 14px 16px 16px; }
+  .card-name { font-weight: 600; font-size: 0.93rem; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+  .card-note { font-size: 0.77rem; color: var(--brown-light); margin-bottom: 10px; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .card-price { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--gold); }
+  .card-qty { display: flex; align-items: center; gap: 8px; }
+  .qty-btn {
+    width: 28px; height: 28px; border-radius: 8px; border: 2px solid var(--border);
+    background: white; font-size: 1rem; font-weight: 600; cursor: pointer;
+    color: var(--brown); display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+  }
+  .qty-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .qty-num { font-weight: 600; min-width: 20px; text-align: center; font-size: 0.95rem; }
+
+  /* COTTON CANDY */
+  .cotton-spotlight {
+    background: linear-gradient(135deg, #F9D7F5 0%, #FCE8FB 40%, #F7D0F2 100%);
+    border-radius: 28px; padding: 0;
+    margin: 0 20px 0;
+    max-width: 1140px; margin-left: auto; margin-right: auto;
+    display: flex; overflow: hidden;
+    box-shadow: 0 8px 30px rgba(123,45,139,0.15);
+  }
+  .cotton-photo {
+    width: 220px; flex-shrink: 0;
+    background: url('https://images.unsplash.com/photo-1582198334529-2d1df226ca93?w=400&q=80') center/cover;
+    min-height: 200px;
+  }
+  .cotton-text { padding: 32px 28px; flex: 1; }
+  .cotton-text h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: #7B2D8B; margin-bottom: 8px; }
+  .cotton-text p { color: #9B4BAA; font-size: 0.93rem; line-height: 1.6; margin-bottom: 16px; }
+  .cotton-badge {
+    background: #7B2D8B; color: white;
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700;
+    padding: 8px 20px; border-radius: 12px; display: inline-block; margin-right: 12px;
+  }
+  .btn-cotton { background: #7B2D8B; color: white; }
+  .btn-cotton:hover { background: #9B3DAB; }
+
+  /* NEIGHBOUR */
+  .neighbour-section {
+    background: linear-gradient(135deg, var(--brown) 0%, #5C3A22 100%);
+    padding: 60px 20px; text-align: center; position: relative; overflow: hidden;
+  }
+  .neighbour-inner { max-width: 640px; margin: 0 auto; }
+  .neighbour-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); color: white; font-weight: 900; margin-bottom: 12px; }
+  .neighbour-section h2 span { color: var(--gold-light); }
+  .neighbour-section p { color: var(--gold-pale); font-size: 1rem; line-height: 1.7; margin-bottom: 28px; }
+  .neighbour-boxes { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 28px; }
+  .neighbour-box {
+    background: rgba(255,255,255,0.1); border: 2px solid rgba(232,184,75,0.5);
+    border-radius: 16px; padding: 14px 18px; cursor: pointer;
+    transition: all 0.2s; text-align: center; min-width: 110px;
+  }
+  .neighbour-box:hover, .neighbour-box.active { background: var(--gold); border-color: var(--gold); transform: scale(1.05); }
+  .neighbour-box svg { width: 28px; height: 28px; fill: rgba(255,255,255,0.8); margin-bottom: 5px; }
+  .neighbour-box .box-label { color: white; font-size: 0.8rem; font-weight: 500; display: block; }
+  .neighbour-box .box-price { color: var(--gold-light); font-weight: 700; font-size: 0.93rem; display: block; }
+  .neighbour-box.active .box-price { color: white; }
+  .neighbour-note { background: rgba(255,255,255,0.07); border-radius: 12px; padding: 14px 20px; color: var(--gold-pale); font-size: 0.85rem; font-style: italic; }
+
+  /* CART */
+  .cart-bar {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 200; width: calc(100% - 40px); max-width: 500px;
+  }
+  .cart-bar.visible { transform: translateX(-50%) translateY(0); }
+  .cart-inner {
+    background: var(--brown); border-radius: 20px; padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+  }
+  .cart-info { color: white; }
+  .cart-count { font-size: 0.8rem; color: var(--gold-pale); }
+  .cart-total { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--gold-light); }
+  .btn-pay { background: var(--gold); color: white; padding: 12px 24px; border-radius: 12px; border: none; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; }
+  .btn-pay:hover { background: var(--gold-light); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px); z-index: 300;
+    display: none; align-items: flex-end; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white; border-radius: 28px 28px 20px 20px;
+    width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto;
+    padding: 28px; animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 4px; margin: 0 auto 20px; }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--brown); margin-bottom: 6px; }
+  .modal-sub { font-size: 0.85rem; color: var(--brown-light); margin-bottom: 22px; }
+  .order-list { margin-bottom: 18px; }
+  .order-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  .order-total { display: flex; justify-content: space-between; padding: 12px 0; font-weight: 700; font-size: 1.05rem; }
+  .payment-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .pay-tab {
+    flex: 1; padding: 10px; border: 2px solid var(--border);
+    border-radius: 12px; text-align: center; cursor: pointer;
+    font-size: 0.85rem; font-weight: 500; transition: all 0.2s; color: var(--text-mid);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .pay-tab svg { width: 16px; height: 16px; }
+  .pay-tab.active { border-color: var(--gold); background: var(--gold-pale); color: var(--brown); }
+  .payment-panel { display: none; }
+  .payment-panel.active { display: block; }
+  .qr-box { background: var(--cream); border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 12px; }
+  .qr-img {
+    width: 180px; height: 180px; background: white;
+    border: 3px solid var(--gold); border-radius: 12px;
+    margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 6px;
+  }
+  .qr-img svg { width: 100px; height: 100px; }
+  .qr-label { font-size: 0.8rem; color: var(--brown-light); }
+  .requisites { background: var(--cream); border-radius: 14px; padding: 18px; }
+  .req-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; gap: 8px;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-label { color: var(--brown-light); flex-shrink: 0; min-width: 90px; font-size: 0.78rem; }
+  .req-val { font-weight: 600; color: var(--brown); text-align: right; word-break: break-all; font-size: 0.82rem; }
+  .req-val a { color: var(--gold); text-decoration: none; font-size: 0.82rem; }
+  .req-val a:hover { text-decoration: underline; }
+  .copy-btn {
+    background: none; border: none; color: var(--gold);
+    cursor: pointer; font-size: 0.73rem; font-weight: 600;
+    padding: 3px 8px; border-radius: 6px; transition: background 0.15s; flex-shrink: 0;
+  }
+  .copy-btn:hover { background: var(--gold-pale); }
+  .confirm-btn {
+    width: 100%; padding: 16px; background: var(--gold); color: white;
+    border: none; border-radius: 14px; font-size: 1rem; font-weight: 700;
+    cursor: pointer; margin-top: 18px; transition: all 0.2s;
+  }
+  .confirm-btn:hover { background: var(--gold-light); }
+  .close-modal {
+    position: absolute; top: 16px; right: 16px;
+    width: 36px; height: 36px; background: var(--cream);
+    border: none; border-radius: 50%; font-size: 1.1rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* TEAM */
+  .team-section { background: var(--warm-white); padding: 60px 20px; }
+  .team-wrap { max-width: 1140px; margin: 0 auto; }
+  .team-head { text-align: center; margin-bottom: 40px; }
+  .team-head h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--brown); font-weight: 700; margin-bottom: 8px; }
+  .team-head p { color: var(--brown-light); line-height: 1.6; }
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+  .team-card {
+    background: white; border-radius: 22px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(61,43,31,0.07); transition: transform 0.25s;
+  }
+  .team-card:hover { transform: translateY(-4px); }
+  .team-photo {
+    width: 100%; height: 180px; object-fit: cover; object-position: top;
+    background: linear-gradient(135deg, var(--gold-pale), var(--border));
+    display: block;
+  }
+  .team-photo-placeholder {
+    width: 100%; height: 180px;
+    background: linear-gradient(160deg, var(--gold-pale), #e0c898);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .team-photo-placeholder svg { width: 72px; height: 72px; opacity: 0.5; }
+  .team-body { padding: 16px 16px 18px; }
+  .team-role-badge {
+    display: inline-block; background: var(--gold-pale); color: var(--gold);
+    font-size: 0.7rem; font-weight: 600; padding: 3px 10px;
+    border-radius: 100px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .team-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--brown); margin-bottom: 4px; }
+  .team-desc { font-size: 0.78rem; color: var(--brown-light); line-height: 1.5; margin-bottom: 14px; }
+  .tip-jar {
+    background: var(--cream); border-radius: 14px; padding: 12px;
+    border: 2px dashed var(--gold-pale); cursor: pointer; transition: all 0.2s; text-align: center;
+  }
+  .tip-jar:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .tip-jar-label { font-size: 0.73rem; color: var(--brown-light); margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .tip-jar-label svg { width: 14px; height: 14px; fill: var(--gold); }
+  .tip-jar-btn {
+    display: block; width: 100%; margin-top: 0; padding: 7px;
+    background: var(--gold); color: white; border: none; border-radius: 10px;
+    font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  .tip-jar-btn:hover { background: var(--gold-light); }
+
+  /* TIP MODAL */
+  .tip-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px); z-index: 400;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .tip-modal-overlay.open { display: flex; }
+  .tip-modal {
+    background: white; border-radius: 24px; padding: 28px;
+    width: 100%; max-width: 360px; text-align: center;
+    animation: slideUp 0.3s ease; position: relative;
+  }
+  .tip-person-photo {
+    width: 90px; height: 90px; border-radius: 50%;
+    object-fit: cover; object-position: top;
+    border: 3px solid var(--gold); margin: 0 auto 12px; display: block;
+    background: var(--gold-pale);
+  }
+  .tip-person-placeholder {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: var(--gold-pale); border: 3px solid var(--gold);
+    margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
+  }
+  .tip-person-placeholder svg { width: 40px; height: 40px; fill: var(--brown-light); }
+  .tip-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--brown); margin-bottom: 4px; }
+  .tip-modal p { font-size: 0.84rem; color: var(--brown-light); margin-bottom: 20px; }
+  .tip-amounts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
+  .tip-amt {
+    padding: 8px 16px; border: 2px solid var(--border); border-radius: 100px;
+    font-weight: 600; font-size: 0.9rem; cursor: pointer; color: var(--brown); transition: all 0.15s;
+  }
+  .tip-amt:hover, .tip-amt.active { border-color: var(--gold); background: var(--gold); color: white; }
+  .tip-qr-box { background: var(--cream); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
+  .tip-iban { font-size: 0.78rem; color: var(--brown-light); margin-top: 8px; }
+  .tip-iban strong { color: var(--brown); display: block; margin-top: 3px; font-size: 0.82rem; word-break: break-all; }
+  .copy-full-btn {
+    width: 100%; padding: 10px; border-radius: 10px;
+    background: var(--gold-pale); color: var(--brown);
+    font-size: 0.82rem; font-weight: 600; border: none; cursor: pointer;
+  }
+  .copy-full-btn:hover { background: var(--gold); color: white; }
+
+  /* SUCCESS */
+  .success-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .success-overlay.open { display: flex; }
+  .success-box { background: white; border-radius: 24px; padding: 40px 28px; text-align: center; max-width: 340px; width: 100%; animation: slideUp 0.3s ease; }
+  .success-icon { font-size: 4rem; margin-bottom: 14px; }
+  .success-box h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--brown); margin-bottom: 8px; }
+  .success-box p { color: var(--brown-light); font-size: 0.9rem; margin-bottom: 20px; }
+
+  /* FOOTER */
+  footer { background: var(--brown); padding: 44px 20px; text-align: center; color: var(--gold-pale); }
+  footer h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: white; margin-bottom: 6px; }
+  footer p { font-size: 0.82rem; opacity: 0.65; }
+  footer .footer-church { margin-top: 14px; font-size: 0.78rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
+
+  @media (max-width: 600px) {
+    .cotton-photo { width: 120px; }
+    .menu-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    .card-img, .card-img-icon { height: 130px; }
+    .cotton-spotlight { flex-direction: column; }
+    .cotton-photo { width: 100%; height: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Церква Спасіння · Васильків</div>
+    <h1>На<br><span>Сьомому</span><br>Небі</h1>
+    <p class="hero-tagline">Смак, що зігріває душу ☕</p>
+    <p class="hero-church">Кафе при Помісній Церкві Спасіння</p>
+    <div class="hero-cta">
+      <a href="#hot" class="btn btn-gold">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M2 21v-2h18v2H2zm2-4V9h2v8H4zm4 0V9h2v8H8zm5-8h5l-1 8h-4l-1-8zm2-4a2 2 0 100-4 2 2 0 000 4z"/></svg>
+        Переглянути меню
+      </a>
+      <a href="#neighbour" class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
+        Купи ближньому
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="sticky-nav" id="stickyNav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="scrollTo('hot')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zm-4 4a2 2 0 01-2 2h-6a2 2 0 01-2-2V5h10v7zm-8 4h8v2H8v-2z"/></svg>
+      Гарячі напої
+    </button>
+    <button class="nav-btn" onclick="scrollTo('cold')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3C7 3 6 8 6 11c0 2.21 1.34 4 3 4s3-1.79 3-4c0-3-1-8-1-8H7zm2 10c-.55 0-1-.9-1-2 0-1.5.53-4 1-5.87.47 1.87 1 4.37 1 5.87 0 1.1-.45 2-1 2zM20 3h-4v2h1v9h-1v2h4v-2h-1V5h1V3zM5 21h14v2H5v-2z"/></svg>
+      Холодні
+    </button>
+    <button class="nav-btn" onclick="scrollTo('food')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7H1v-2h15.03v2zm0-4H1v-2h15.03v2z"/></svg>
+      Страви
+    </button>
+    <button class="nav-btn" onclick="scrollTo('cotton')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1zM10 18h4v1c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-1z"/></svg>
+      Цукрова вата
+    </button>
+    <button class="nav-btn" onclick="scrollTo('sweets')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.09 2.82C15.08 1.13 12 2.54 12 5.17c0-2.63-3.08-4.04-5.09-2.35C4.78 4.47 5.14 8.12 7.5 9.5H4v2h16V9.5h-3.5c2.36-1.38 2.72-5.03.59-6.68zM12 9c-.89-1.54-3.54-1.96-4.5-3 1.26.22 2.55 1.09 4.5 1.09 1.96 0 3.24-.87 4.5-1.09C15.54 7.04 12.89 7.46 12 9zm3 5H9v8h6v-8z"/></svg>
+      Цукерки
+    </button>
+    <button class="nav-btn" onclick="scrollTo('choco')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4v2h16V3zM3 19h18v2H3v-2zM20 7H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm-5 3v2h-2V10h2zm2 4V10h2v4h-2zm-8-4h2v2h-2V10zm-4 0h2v4H5v-4z"/></svg>
+      Шоколад
+    </button>
+    <button class="nav-btn" onclick="scrollTo('desserts')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.5 3c-1.84 0-3.41 1.31-3.85 3.06-.43-.04-.86-.06-1.29-.06-5.5 0-10 4.26-10 9.5 0 .51.04 1.01.12 1.5H3v2h18v-2h-.48c.08-.49.12-.99.12-1.5 0-2.14-.67-4.13-1.82-5.77C19.56 9.07 20 8.09 20 7c0-2.21-1.79-4-4-4h2.5zm0 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/></svg>
+      Десерти
+    </button>
+    <button class="nav-btn" onclick="scrollTo('neighbour')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
+      Ближньому
+    </button>
+    <button class="nav-btn" onclick="scrollTo('team')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      Команда
+    </button>
+  </div>
+</nav>
+
+<!-- HOT DRINKS -->
+<div id="hot" class="section-wrap">
+  <div class="section-head">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 17h16v2H4z"/></svg>
+    </div>
+    <div><h2>Гарячі напої</h2><p>Кава та чай — зварені з душею</p></div>
+  </div>
+  <div class="menu-grid" id="grid-hot"></div>
+</div>
+
+<!-- COLD -->
+<div id="cold" class="section-wrap" style="padding-top:0">
+  <div class="section-head">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24"><path d="M7 3C7 3 6 8 6 11c0 2.21 1.34 4 3 4s3-1.79 3-4c0-3-1-8-1-8H7zm2 10c-.55 0-1-.9-1-2 0-1.5.53-4 1-5.87.47 1.87 1 4.37 1 5.87 0 1.1-.45 2-1 2zM5 21h14v2H5v-2z"/></svg>
+    </div>
+    <div><h2>Холодні напої та соки</h2><p>Освіжайся!</p></div>
+  </div>
+  <div class="menu-grid" id="grid-cold"></div>
+</div>
+
+<!-- FOOD -->
+<div id="food" class="section-wrap" style="padding-top:0">
+  <div class="section-head">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7H1v-2h15.03v2zm0-4H1v-2h15.03v2z"/></svg>
+    </div>
+    <div><h2>Основні страви та снеки</h2><p>Смачно та ситно</p></div>
+  </div>
+  <div class="menu-grid" id="grid-food"></div>
+</div>
+
+<!-- COTTON CANDY -->
+<div id="cotton" style="padding: 0 20px; max-width:1140px; margin: 0 auto 60px;">
+  <div class="cotton-spotlight">
+    <div class="cotton-photo"></div>
+    <div class="cotton-text">
+      <h2>✨ Цукрова вата</h2>
+      <p>Наша нова зіркова позиція! Пухнаста, солодка та радісна — для дітей та тих, хто в душі ще дитина. Свіжа й приготована прямо при тобі!</p>
+      <span class="cotton-badge">30 грн / порція</span>
+      <button class="btn btn-cotton" onclick="addCottonCandy()" style="margin-top:12px; border:none; padding:12px 22px; border-radius:12px; font-weight:600; cursor:pointer; font-size:0.93rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="vertical-align:middle;margin-right:6px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        Додати до замовлення
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SWEETS -->
+<div id="sweets" class="section-wrap" style="padding-top:0">
+  <div class="section-head">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24"><path d="M17.09 2.82C15.08 1.13 12 2.54 12 5.17c0-2.63-3.08-4.04-5.09-2.35C4.78 4.47 5.14 8.12 7.5 9.5H4v2h16V9.5h-3.5c2.36-1.38 2.72-5.03.59-6.68zM12 9c-.89-1.54-3.54-1.96-4.5-3 1.26.22 2.55 1.09 4.5 1.09 1.96 0 3.24-.87 4.5-1.09C15.54 7.04 12.89 7.46 12 9zm3 5H9v8h6v-8z"/></svg>
+    </div>
+    <div><h2>Цукерки, льодяники та морозиво</h2><p>Маленькі радощі великого дня</p></div>
+  </div>
+  <div class="menu-grid" id="grid-sweets"></div>
+</div>
+
+<!-- CHOCO -->
+<div id="choco" class="section-wrap" style="padding-top:0">
+  <div class="section-head">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24"><path d="M20 3H4v2h16V3zM3 19h18v2H3v-2zM20 7H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm-5 3v2h-2V10h2zm2 4V10h2v4h-2zm-8-4h2v2h-2V10zm-4 0h2v4H5v-4z"/></svg>
+    </div>
+    <div><h2>Шоколадні набори та печиво</h2><p>Для особливих моментів та подарунків</p></div>
+  </div>
+  <div class="menu-grid" id="grid-choco"></div>
+</div>
+
+<!-- DESSERTS -->
+<div id="desserts" class="section-wrap" style="padding-top:0">
+  <div class="section-head">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24"><path d="M18.5 3c-1.84 0-3.41 1.31-3.85 3.06-.43-.04-.86-.06-1.29-.06-5.5 0-10 4.26-10 9.5 0 .51.04 1.01.12 1.5H3v2h18v-2h-.48c.08-.49.12-.99.12-1.5 0-2.14-.67-4.13-1.82-5.77C19.56 9.07 20 8.09 20 7c0-2.21-1.79-4-4-4h2.5z"/></svg>
+    </div>
+    <div><h2>Десерти власного приготування</h2><p>Зроблено з любов'ю прямо тут</p></div>
+  </div>
+  <div class="menu-grid" id="grid-desserts"></div>
+</div>
+
+<!-- NEIGHBOUR PROJECT -->
+<section id="neighbour" class="neighbour-section">
+  <div class="neighbour-inner">
+    <svg width="50" height="50" viewBox="0 0 24 24" fill="rgba(255,255,255,0.3)" style="margin-bottom:16px;"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
+    <h2>Купи щось <span>ближньому</span></h2>
+    <p>Оплатіть напій або смаколик для незнайомця — і наша команда з радістю подарує його наступній людині, яка прийде та потребує тепла. Невеликий жест — великий вплив на серце.</p>
+    <div class="neighbour-boxes">
+      <div class="neighbour-box" onclick="selectNeighbour(this,'Чай',15)">
+        <svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 17h16v2H4z"/></svg>
+        <span class="box-label">Чай</span>
+        <span class="box-price">15 грн</span>
+      </div>
+      <div class="neighbour-box" onclick="selectNeighbour(this,'Кава',25)">
+        <svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 17h16v2H4z"/></svg>
+        <span class="box-label">Кава</span>
+        <span class="box-price">25 грн</span>
+      </div>
+      <div class="neighbour-box" onclick="selectNeighbour(this,'Лате',40)">
+        <svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 17h16v2H4z"/></svg>
+        <span class="box-label">Лате</span>
+        <span class="box-price">40 грн</span>
+      </div>
+      <div class="neighbour-box" onclick="selectNeighbour(this,'Хот-дог',55)">
+        <svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7H1v-2h15.03v2zm0-4H1v-2h15.03v2z"/></svg>
+        <span class="box-label">Хот-дог</span>
+        <span class="box-price">55 грн</span>
+      </div>
+      <div class="neighbour-box" onclick="selectNeighbour(this,'Бургер',60)">
+        <svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7H1v-2h15.03v2zm0-4H1v-2h15.03v2z"/></svg>
+        <span class="box-label">Бургер</span>
+        <span class="box-price">60 грн</span>
+      </div>
+      <div class="neighbour-box" onclick="selectNeighbour(this,'Донер',100)">
+        <svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7H1v-2h15.03v2zm0-4H1v-2h15.03v2z"/></svg>
+        <span class="box-label">Донер</span>
+        <span class="box-price">100 грн</span>
+      </div>
+    </div>
+    <div class="neighbour-note" id="neighbourNote" style="display:none;"></div>
+    <button class="btn btn-gold" id="neighbourPayBtn" style="margin-top:20px;display:none;" onclick="openNeighbourPay()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
+      Оплатити для ближнього
+    </button>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="team-section">
+  <div class="team-wrap">
+    <div class="team-head">
+      <h2>Наша команда</h2>
+      <p>Вони роблять це місце особливим — з посмішкою, кавою та молитвою.<br>Хочеш подякувати? Залиш чайові прямо тут 🫶</p>
+    </div>
+    <div class="team-grid" id="teamGrid"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <h3>На Сьомому Небі</h3>
+  <p style="margin-top:6px;">Кафе при Помісній Церкві Спасіння</p>
+  <p style="margin-top:8px;">м. Васильків, Київська область</p>
+  <p class="footer-church">РГ ХВЄ «Помісна Церква Спасіння» · ЄДРПОУ 39350143</p>
+</footer>
+
+<!-- CART BAR -->
+<div class="cart-bar" id="cartBar">
+  <div class="cart-inner">
+    <div class="cart-info">
+      <div class="cart-count" id="cartCount">0 позицій</div>
+      <div class="cart-total" id="cartTotal">0 грн</div>
+    </div>
+    <button class="btn-pay" onclick="openPayModal()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="white" style="vertical-align:middle;margin-right:5px;"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+      Оплатити
+    </button>
+  </div>
+</div>
+
+<!-- PAY MODAL -->
+<div class="modal-overlay" id="payModal">
+  <div class="modal">
+    <button class="close-modal" onclick="closePayModal()">✕</button>
+    <div class="modal-handle"></div>
+    <h3>Ваше замовлення</h3>
+    <p class="modal-sub">Оберіть зручний спосіб оплати 👇</p>
+    <div class="order-list" id="orderList"></div>
+    <div class="order-total">
+      <span>Разом</span>
+      <span id="modalTotal" style="color:var(--gold);">0 грн</span>
+    </div>
+    <div class="payment-tabs">
+      <div class="pay-tab active" onclick="switchTab('qr')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 13h2v2h-2zm2 2h2v2h-2zm2-2h2v2h-2zm-4 4h2v2h-2zm2 2h2v2h-2zm2-4h2v4h-2z"/></svg>
+        QR-код / Monobank
+      </div>
+      <div class="pay-tab" onclick="switchTab('card')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        Реквізити
+      </div>
+    </div>
+    <div class="payment-panel active" id="panel-qr">
+      <div class="qr-box">
+        <div class="qr-img">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="35" height="35" fill="none" stroke="#C8922A" stroke-width="4"/>
+            <rect x="13" y="13" width="19" height="19" fill="#C8922A"/>
+            <rect x="60" y="5" width="35" height="35" fill="none" stroke="#C8922A" stroke-width="4"/>
+            <rect x="68" y="13" width="19" height="19" fill="#C8922A"/>
+            <rect x="5" y="60" width="35" height="35" fill="none" stroke="#C8922A" stroke-width="4"/>
+            <rect x="13" y="68" width="19" height="19" fill="#C8922A"/>
+            <rect x="50" y="50" width="8" height="8" fill="#C8922A"/>
+            <rect x="62" y="50" width="8" height="8" fill="#C8922A"/>
+            <rect x="74" y="50" width="8" height="8" fill="#C8922A"/>
+            <rect x="86" y="50" width="8" height="8" fill="#C8922A"/>
+            <rect x="50" y="62" width="8" height="8" fill="#C8922A"/>
+            <rect x="74" y="62" width="8" height="8" fill="#C8922A"/>
+            <rect x="50" y="74" width="8" height="8" fill="#C8922A"/>
+            <rect x="62" y="74" width="8" height="8" fill="#C8922A"/>
+            <rect x="86" y="74" width="8" height="8" fill="#C8922A"/>
+            <rect x="62" y="86" width="8" height="8" fill="#C8922A"/>
+            <rect x="86" y="86" width="8" height="8" fill="#C8922A"/>
+          </svg>
+        </div>
+        <p class="qr-label">Відскануй QR-код камерою або застосунком Monobank</p>
+        <p style="font-size:0.75rem;color:var(--brown-light);margin-top:6px;font-style:italic;">⚠️ Замініть цей QR на реальний з вашого Monobank</p>
+      </div>
+    </div>
+    <div class="payment-panel" id="panel-card">
+      <div class="requisites">
+        <div class="req-row">
+          <span class="req-label">Одержувач</span>
+          <span class="req-val">РГ ХВЄ «ПОМІСНА ЦЕРКВА СПАСІННЯ» м. ВАСИЛЬКІВ</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">IBAN</span>
+          <span class="req-val">
+            <a href="https://pay.monobank.ua/?t=UA593220010000026000700016214" target="_blank">UA59 3220 0100 0002 6000 7000 1621 4</a>
+          </span>
+          <button class="copy-btn" onclick="copyText('UA593220010000026000700016214','IBAN скопійовано!')">Копіювати</button>
+        </div>
+        <div class="req-row">
+          <span class="req-label">Банк</span>
+          <span class="req-val">АТ «УНІВЕРСАЛ БАНК» · МФО 322001</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">ЄДРПОУ</span>
+          <span class="req-val">39350143</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">ЄДРПОУ банку</span>
+          <span class="req-val">21133352</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">Призначення</span>
+          <span class="req-val" id="payPurpose">Оплата замовлення у кафе</span>
+          <button class="copy-btn" onclick="copyText(document.getElementById('payPurpose').textContent,'Призначення скопійовано!')">Копіювати</button>
+        </div>
+      </div>
+    </div>
+    <button class="confirm-btn" onclick="confirmPay()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="vertical-align:middle;margin-right:6px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+      Я оплатив(ла) — дякую!
+    </button>
+  </div>
+</div>
+
+<!-- TIP MODAL -->
+<div class="tip-modal-overlay" id="tipModal">
+  <div class="tip-modal">
+    <button class="close-modal" onclick="closeTipModal()">✕</button>
+    <div id="tipPersonImg"></div>
+    <h3 id="tipName">Яна</h3>
+    <p id="tipDesc"></p>
+    <div class="tip-amounts">
+      <div class="tip-amt" onclick="selectTip(this,20)">20 грн</div>
+      <div class="tip-amt" onclick="selectTip(this,50)">50 грн</div>
+      <div class="tip-amt" onclick="selectTip(this,100)">100 грн</div>
+      <div class="tip-amt" onclick="selectTip(this,200)">200 грн</div>
+    </div>
+    <div class="tip-qr-box">
+      <div style="width:100px;height:100px;background:white;border:2px solid var(--gold);border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">
+        <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="5" width="30" height="30" fill="none" stroke="#C8922A" stroke-width="4"/>
+          <rect x="12" y="12" width="16" height="16" fill="#C8922A"/>
+          <rect x="65" y="5" width="30" height="30" fill="none" stroke="#C8922A" stroke-width="4"/>
+          <rect x="72" y="12" width="16" height="16" fill="#C8922A"/>
+          <rect x="5" y="65" width="30" height="30" fill="none" stroke="#C8922A" stroke-width="4"/>
+          <rect x="12" y="72" width="16" height="16" fill="#C8922A"/>
+          <rect x="45" y="45" width="10" height="10" fill="#C8922A"/>
+          <rect x="60" y="60" width="10" height="10" fill="#C8922A"/>
+          <rect x="80" y="60" width="10" height="10" fill="#C8922A"/>
+          <rect x="60" y="80" width="10" height="10" fill="#C8922A"/>
+          <rect x="80" y="80" width="10" height="10" fill="#C8922A"/>
+        </svg>
+      </div>
+      <div class="tip-iban">
+        IBAN для подяки
+        <strong id="tipIban">UA00 0000 0000 0000 0000</strong>
+      </div>
+    </div>
+    <button class="copy-full-btn" onclick="copyTipIban()" id="copyTipBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:5px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      Копіювати IBAN
+    </button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">🙏</div>
+    <h3>Дякуємо!</h3>
+    <p>Замовлення прийнято. Служителі вже готують усе з любов'ю та молитвою!</p>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;" onclick="closeSuccess()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+      Чудово!
+    </button>
+  </div>
+</div>
+
+<script>
+// ══ MENU DATA with Unsplash photo URLs ══
+const menu = {
+  hot: [
+    { name:'Лате', price:40, emoji:'☕', note:'Ніжний та кремовий', photo:'https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400&q=80' },
+    { name:'Капучино', price:40, emoji:'🍵', note:'Повітряна молочна пінка', photo:'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&q=80' },
+    { name:'Еко-чай', price:35, emoji:'🌿', note:'Натуральні трави', photo:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+    { name:'Американо з молоком', price:30, emoji:'☕', note:'М\'який та збалансований', photo:'https://images.unsplash.com/photo-1485808191679-5f86510bd652?w=400&q=80' },
+    { name:'Еспресо з молоком', price:30, emoji:'🫗', note:'Ніжна класика', photo:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80' },
+    { name:'Американо', price:25, emoji:'☕', note:'Класичний чорний', photo:'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80' },
+    { name:'Еспресо', price:25, emoji:'⚡', note:'Міцний та ароматний', photo:'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=400&q=80' },
+    { name:'Чай асорт.', price:15, emoji:'🍵', note:'Різні смаки на вибір', photo:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+  ],
+  cold: [
+    { name:'Сік Sandora (великий пакет)', price:95, emoji:'🧃', note:'Для компанії', photo:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&q=80' },
+    { name:'FuzeTea (пляшка)', price:40, emoji:'🫖', note:'Холодний чай', photo:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80' },
+    { name:'Aloe King (банка)', price:30, emoji:'🌵', note:'Освіжаючий та корисний', photo:'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&q=80' },
+    { name:'Coca-Cola (банка)', price:35, emoji:'🥤', note:'Класика', photo:'https://images.unsplash.com/photo-1629203851122-3726555cf519?w=400&q=80' },
+    { name:'Coca-Cola (пляшка)', price:30, emoji:'🥤', note:'Класика', photo:'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80' },
+    { name:'Сік Galicia (дитячий)', price:25, emoji:'🍎', note:'Для маленьких', photo:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&q=80' },
+    { name:'Capri-Sun Multivitamin', price:25, emoji:'🌞', note:'Вітаміни та смак', photo:'https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&q=80' },
+    { name:'Сік «Губка Боб»', price:25, emoji:'🧽', note:'В асортименті', photo:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&q=80' },
+    { name:'Лимонад / Квас пляшковий', price:25, emoji:'🍋', note:'Домашній смак', photo:'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=400&q=80' },
+    { name:'Вода Моршинська 0.5л', price:20, emoji:'💧', note:'Мінеральна', photo:'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=400&q=80' },
+    { name:'Склянка компоту / Узвару', price:15, emoji:'🍒', note:'Тепло та затишок', photo:'https://images.unsplash.com/photo-1568909344668-6f14a07b56a0?w=400&q=80' },
+  ],
+  food: [
+    { name:'Донер (Шаурма)', price:100, emoji:'🌯', note:'Ситний та соковитий', photo:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=400&q=80' },
+    { name:'Бургер Чізбургер', price:90, emoji:'🍔', note:'З сиром та соусом', photo:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80' },
+    { name:'Бургер Класичний', price:60, emoji:'🍔', note:'Простий та смачний', photo:'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&q=80' },
+    { name:'Хот-дог', price:55, emoji:'🌭', note:'З гірчицею та кетчупом', photo:'https://images.unsplash.com/photo-1619740455993-9197a0d4bae8?w=400&q=80' },
+    { name:'Гаряча кукурудза', price:55, emoji:'🌽', note:'З маслом та сіллю', photo:'https://images.unsplash.com/photo-1601593346740-925612772716?w=400&q=80' },
+    { name:'Роліні', price:35, emoji:'🥐', note:'Легка закуска', photo:'https://images.unsplash.com/photo-1509722747041-616f39b57d91?w=400&q=80' },
+  ],
+  sweets: [
+    { name:'Морозиво «Рудь 100%» ріжок', price:45, emoji:'🍦', note:'Свіже на вітрині', photo:'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=400&q=80' },
+    { name:'Цукерки «Метеорит»', price:12, emoji:'🍬', note:'12 грн / шт.', photo:'https://images.unsplash.com/photo-1553254672-1b1a8ecf6ead?w=400&q=80' },
+    { name:'Чупа-Чупс', price:10, emoji:'🍭', note:'10 грн / шт.', photo:'https://images.unsplash.com/photo-1604519951167-c3c73b54e8b8?w=400&q=80' },
+    { name:'Цукерки «Червоний мак»', price:8, emoji:'🌸', note:'8 грн / шт.', photo:'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=400&q=80' },
+    { name:'Цукерки «Ромашка»', price:5, emoji:'🌼', note:'5 грн / шт.', photo:'https://images.unsplash.com/photo-1553254672-1b1a8ecf6ead?w=400&q=80' },
+    { name:'Halls / Желейки Roshen', price:27, emoji:'🟢', note:'20–35 грн / упаковка', photo:'https://images.unsplash.com/photo-1604519951167-c3c73b54e8b8?w=400&q=80' },
+  ],
+  choco: [
+    { name:'Ferrero Rocher (коробка)', price:300, emoji:'🎁', note:'Преміум подарунок', photo:'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=400&q=80' },
+    { name:'Шоколад Lacmi 280г', price:195, emoji:'🍫', note:'Велика плитка', photo:'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=400&q=80' },
+    { name:'Roshen Assortment / Compliment', price:190, emoji:'🎀', note:'Коробка цукерок', photo:'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=400&q=80' },
+    { name:'Millennium Riviera', price:190, emoji:'🍫', note:'Коробка цукерок', photo:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&q=80' },
+    { name:'Amanti (вафлі та цукерки)', price:350, emoji:'✨', note:'Подарункове асорті', photo:'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&q=80' },
+    { name:'Печиво Roshen Lovita', price:45, emoji:'🍪', note:'З арахісом / ягідним', photo:'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&q=80' },
+    { name:'Тістечко «Барні»', price:25, emoji:'🐻', note:'Шоколад / банан / молоко', photo:'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=400&q=80' },
+    { name:'Snickers / Twix / Mars / Bounty', price:27, emoji:'🍫', note:'25–30 грн / шт.', photo:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&q=80' },
+    { name:'Мюслі-батончик Bono-Bar', price:15, emoji:'🌾', note:'Корисна закуска', photo:'https://images.unsplash.com/photo-1490567674331-8012a3e1c7a8?w=400&q=80' },
+  ],
+  desserts: [
+    { name:'Еклери в шоколадній глазурі', price:30, emoji:'🍫', note:'Власного приготування', photo:'https://images.unsplash.com/photo-1509461399763-ae67a981b254?w=400&q=80' },
+    { name:'Вафельний тортик (порція)', price:25, emoji:'🎂', note:'Ніжний та хрусткий', photo:'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80' },
+    { name:'Трубочки зі згущеним молоком', price:25, emoji:'🥐', note:'Домашній рецепт', photo:'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
+    { name:'Вафельний ріжок солодкий', price:25, emoji:'🍦', note:'Хрусткий та ніжний', photo:'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=400&q=80' },
+    { name:'Трикутники (фруктова начинка)', price:15, emoji:'🔺', note:'Асорті фруктів', photo:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&q=80' },
+    { name:'Тістечко «Мурашник»', price:15, emoji:'🐜', note:'Справжня класика!', photo:'https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?w=400&q=80' },
+    { name:'Горішки зі згущеним молоком', price:10, emoji:'🥜', note:'Хрусткі та солодкі', photo:'https://images.unsplash.com/photo-1519915028121-7d3463d5b1ff?w=400&q=80' },
+  ],
+};
+
+const team = [
+  {
+    name:'Шура', role:'Директор кафе',
+    badge:'🎖️ Капітанша корабля',
+    desc:'Шура тримає весь корабель на курсі! Вона відповідає за всі процеси, настрій у команді та кофемашину. Без неї кафе просто не злетить! ✈️',
+    iban:'UA59 3220 0100 0002 6000 7000 1621 4',
+    photo:'https://images.unsplash.com/photo-1573496799515-eebbb63814f2?w=300&q=80'
+  },
+  {
+    name:'Марина', role:'Відповідальна за закупки',
+    badge:'🛒 Господиня запасів',
+    desc:'Марина знає кожен шоколад та кожну каву в нашому меню — бо саме вона їх знаходить, вибирає та привозить! 📦',
+    iban:'UA59 3220 0100 0002 6000 7000 1621 4',
+    photo:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&q=80'
+  },
+  {
+    name:'Максим', role:'Допомога із закупками',
+    badge:'💪 Чоловіча сила кафе',
+    desc:'Максим — наш непохитний тил! Тягне коробки, привозить товар, лагодить все, що зламалось. Без нього кафедра б просто розвалилась на частини 😄',
+    iban:'UA59 3220 0100 0002 6000 7000 1621 4',
+    photo:'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&q=80'
+  },
+  {
+    name:'Даша', role:'Кухарка (бургери та кукурудза)',
+    badge:'🍔 Королева гриля',
+    desc:'Даша смажить найсмачніші бургери та кукурудзу в місті! Її секрет — любов до справи та щіпка натхнення в кожній порції 🌽🔥',
+    iban:'UA59 3220 0100 0002 6000 7000 1621 4',
+    photo:'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&q=80'
+  },
+  {
+    name:'Яна', role:'Баристка',
+    badge:'☕ Кавовий геній',
+    desc:'Яна заварює найкращу каву та завжди зустрічає тебе з посмішкою. Знає твоє замовлення ще до того, як ти його назвеш! 💛',
+    iban:'UA59 3220 0100 0002 6000 7000 1621 4',
+    photo:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=300&q=80'
+  },
+  {
+    name:'Таня', role:'Баристка',
+    badge:'☕ Майстриня лате',
+    desc:'Таня вміє намалювати серденько на твоїй каві і вкладає справжнє серце у кожну склянку. Затишок — це її мова! 🤍',
+    iban:'UA59 3220 0100 0002 6000 7000 1621 4',
+    photo:'https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=300&q=80'
+  },
+  {
+    name:'Юля', role:'Баристка',
+    badge:'☕ Зоряна усмішка',
+    desc:'Юля — джерело енергії та позитиву! Коли вона за стійкою, черга росте — бо всі хочуть трохи її радості. ✨',
+    iban:'UA59 3220 0100 0002 6000 7000 1621 4',
+    photo:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&q=80'
+  },
+];
+
+// ══ STATE ══
+let cart = {}, selectedNeighbour = null, currentTipPerson = null;
+
+// ══ RENDER ══
+function personIcon() {
+  return `<svg viewBox="0 0 24 24" fill="#B8956A"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>`;
+}
+
+function renderSection(id, items) {
+  document.getElementById('grid-'+id).innerHTML = items.map((item,i) => `
+    <div class="menu-card" id="card-${id}-${i}" onclick="toggleCard('${id}',${i})">
+      <img class="card-img" src="${item.photo}" alt="${item.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="card-img-icon" style="display:none;font-size:3.8rem;">${item.emoji||'🍽️'}</div>
+      <div class="card-body">
+        <div class="card-name">${item.name}</div>
+        <div class="card-note">${item.note}</div>
+        <div class="card-footer">
+          <div class="card-price">${item.price} грн</div>
+          <div class="card-qty">
+            <button class="qty-btn" onclick="changeQty(event,'${id}',${i},-1)">−</button>
+            <span class="qty-num" id="qty-${id}-${i}">0</span>
+            <button class="qty-btn" onclick="changeQty(event,'${id}',${i},+1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+['hot','cold','food','sweets','choco','desserts'].forEach(k => renderSection(k, menu[k]));
+
+// Team
+document.getElementById('teamGrid').innerHTML = team.map((p,i) => `
+  <div class="team-card">
+    <img class="team-photo" src="${p.photo}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="team-photo-placeholder" style="display:none;">${personIcon()}</div>
+    <div class="team-body">
+      <div class="team-role-badge">${p.badge}</div>
+      <div class="team-name">${p.name}</div>
+      <div class="team-desc">${p.desc}</div>
+      <div class="tip-jar" onclick="openTip(${i})">
+        <div class="tip-jar-label">
+          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+          Подякувати ${p.name}
+        </div>
+        <button class="tip-jar-btn">Залишити чайові 💛</button>
+      </div>
+    </div>
+  </div>
+`).join('');
+
+// ══ CART LOGIC ══
+function toggleCard(section, idx) {
+  const key = section+'-'+idx;
+  if (!cart[key]) changeQtyDirect(section, idx, 1);
+}
+function changeQty(e, section, idx, delta) { e.stopPropagation(); changeQtyDirect(section, idx, delta); }
+function changeQtyDirect(section, idx, delta) {
+  const key = section+'-'+idx;
+  const cur = cart[key] ? cart[key].qty : 0;
+  const nq = Math.max(0, cur+delta);
+  const item = menu[section][idx];
+  if (nq===0) { delete cart[key]; document.getElementById('card-'+key).classList.remove('selected'); }
+  else { cart[key] = {name:item.name, price:item.price, qty:nq}; document.getElementById('card-'+key).classList.add('selected'); }
+  const qEl = document.getElementById('qty-'+key);
+  if (qEl) qEl.textContent = nq;
+  updateCartBar();
+}
+function addCottonCandy() {
+  cart['cotton-0'] = cart['cotton-0']
+    ? {...cart['cotton-0'], qty:cart['cotton-0'].qty+1}
+    : {name:'Цукрова вата', price:30, qty:1};
+  updateCartBar(); showToast('Цукрову вату додано до замовлення!');
+}
+function updateCartBar() {
+  const keys = Object.keys(cart);
+  const total = keys.reduce((s,k)=>s+cart[k].price*cart[k].qty,0);
+  const count = keys.reduce((s,k)=>s+cart[k].qty,0);
+  document.getElementById('cartCount').textContent = count+' позицій';
+  document.getElementById('cartTotal').textContent = total+' грн';
+  document.getElementById('cartBar').classList.toggle('visible', count>0);
+}
+
+// ══ NEIGHBOUR ══
+function selectNeighbour(el, name, price) {
+  document.querySelectorAll('.neighbour-box').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); selectedNeighbour={name,price};
+  document.getElementById('neighbourNote').style.display='block';
+  document.getElementById('neighbourNote').textContent=`Ви готові купити «${name}» (${price} грн) для незнайомої людини. Це справжній вчинок любові! 💛`;
+  document.getElementById('neighbourPayBtn').style.display='inline-flex';
+}
+function openNeighbourPay() {
+  if (!selectedNeighbour) return;
+  cart['neighbour']={name:'🤲 Для ближнього: '+selectedNeighbour.name, price:selectedNeighbour.price, qty:1};
+  updateCartBar(); openPayModal();
+}
+
+// ══ PAY MODAL ══
+function openPayModal() {
+  const keys = Object.keys(cart);
+  const total = keys.reduce((s,k)=>s+cart[k].price*cart[k].qty,0);
+  document.getElementById('orderList').innerHTML = keys.map(k=>
+    `<div class="order-item"><span>${cart[k].name} × ${cart[k].qty}</span><span>${cart[k].price*cart[k].qty} грн</span></div>`
+  ).join('');
+  document.getElementById('modalTotal').textContent = total+' грн';
+  document.getElementById('payModal').classList.add('open');
+}
+function closePayModal() { document.getElementById('payModal').classList.remove('open'); }
+function switchTab(tab) {
+  document.querySelectorAll('.pay-tab').forEach((t,i)=>t.classList.toggle('active',['qr','card'][i]===tab));
+  document.querySelectorAll('.payment-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+}
+function copyText(text, msg) { navigator.clipboard.writeText(text).then(()=>showToast(msg||'Скопійовано!')); }
+function confirmPay() {
+  closePayModal(); cart={};
+  document.querySelectorAll('.menu-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.qty-num').forEach(q=>q.textContent='0');
+  updateCartBar(); document.getElementById('successOverlay').classList.add('open');
+}
+function closeSuccess() { document.getElementById('successOverlay').classList.remove('open'); }
+
+// ══ TIP ══
+let currentTipIdx = null;
+function openTip(idx) {
+  currentTipIdx = idx;
+  const p = team[idx];
+  document.getElementById('tipPersonImg').innerHTML =
+    `<img class="tip-person-photo" src="${p.photo}" alt="${p.name}" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=tip-person-placeholder>${personIcon()}</div>')">`;
+  document.getElementById('tipName').textContent = 'Подякувати '+p.name;
+  document.getElementById('tipDesc').textContent = p.desc;
+  document.getElementById('tipIban').textContent = p.iban;
+  document.querySelectorAll('.tip-amt').forEach(a=>a.classList.remove('active'));
+  document.getElementById('tipModal').classList.add('open');
+}
+function closeTipModal() { document.getElementById('tipModal').classList.remove('open'); }
+function selectTip(el, amt) { document.querySelectorAll('.tip-amt').forEach(a=>a.classList.remove('active')); el.classList.add('active'); }
+function copyTipIban() {
+  if (currentTipIdx===null) return;
+  const raw = team[currentTipIdx].iban.replace(/\s/g,'');
+  navigator.clipboard.writeText(raw).then(()=>showToast('IBAN скопійовано!'));
+}
+
+// ══ TOAST ══
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText='position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--brown);color:white;padding:10px 20px;border-radius:100px;font-size:0.84rem;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.25);animation:slideUp 0.3s ease';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2800);
+}
+
+// ══ NAV ══
+function scrollTo(id) { document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'}); }
+
+// ══ CLOSE ON BACKDROP ══
+['payModal','tipModal','successOverlay'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){
+    if(e.target===this){
+      if(id==='payModal') closePayModal();
+      else if(id==='tipModal') closeTipModal();
+      else closeSuccess();
+    }
+  });
+});
+</script>
+</body>
+</html>
