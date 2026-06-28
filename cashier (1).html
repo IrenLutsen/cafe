@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☕ Панель касира — На сьомому небі</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C8922A; --gold-l: #E8B84B; --gold-pale: #F5E6C8;
+  --brown: #3D2B1F; --brown-m: #7A5C3E; --brown-l: #B8956A;
+  --cream: #FDF6EC; --white: #FFFDF9;
+  --green: #2D7D46; --red: #C0392B; --blue: #1A5276; --orange: #D35400;
+  --border: #E8D4B0; --shadow: 0 2px 16px rgba(61,43,31,0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Manrope', sans-serif; background: var(--cream); color: var(--brown); }
+
+/* ── LOGIN ── */
+.login-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, var(--brown) 0%, #5C3A22 100%);
+  padding: 20px;
+}
+.login-box {
+  background: white; border-radius: 24px; padding: 40px 32px;
+  width: 100%; max-width: 380px; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.login-logo { font-size: 3rem; margin-bottom: 12px; }
+.login-box h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--brown); margin-bottom: 4px; }
+.login-box p { font-size: 0.85rem; color: var(--brown-l); margin-bottom: 28px; }
+.login-input {
+  width: 100%; padding: 14px 16px; border: 2px solid var(--border);
+  border-radius: 12px; font-family: 'Manrope', sans-serif; font-size: 1rem;
+  margin-bottom: 14px; outline: none; transition: border 0.2s;
+}
+.login-input:focus { border-color: var(--gold); }
+.login-btn {
+  width: 100%; padding: 14px; background: var(--gold); color: white;
+  border: none; border-radius: 12px; font-family: 'Manrope', sans-serif;
+  font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+}
+.login-btn:hover { background: var(--gold-l); transform: translateY(-1px); }
+.login-err { color: var(--red); font-size: 0.85rem; margin-top: 10px; display: none; }
+
+/* ── LAYOUT ── */
+.app { display: none; flex-direction: column; min-height: 100vh; }
+.topbar {
+  background: var(--brown); padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-logo { font-size: 1.5rem; }
+.topbar-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: white; }
+.topbar-sub { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.role-badge {
+  background: var(--gold); color: white;
+  font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 100px;
+}
+.logout-btn {
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+  border: none; padding: 6px 12px; border-radius: 8px;
+  font-size: 0.8rem; cursor: pointer; transition: all 0.2s;
+}
+.logout-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+
+/* ── TABS ── */
+.tabs {
+  background: white; border-bottom: 2px solid var(--border);
+  padding: 0 16px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 14px 18px; border: none; background: none;
+  font-family: 'Manrope', sans-serif; font-size: 0.88rem; font-weight: 600;
+  color: var(--brown-l); cursor: pointer; border-bottom: 3px solid transparent;
+  margin-bottom: -2px; white-space: nowrap; transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.tab:hover { color: var(--gold); }
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-badge {
+  background: var(--red); color: white;
+  font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 100px;
+  min-width: 18px; text-align: center;
+}
+
+/* ── CONTENT ── */
+.content { padding: 20px; max-width: 1200px; margin: 0 auto; flex: 1; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── STAT CARDS ── */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.stat-card {
+  background: white; border-radius: 16px; padding: 18px;
+  box-shadow: var(--shadow); text-align: center;
+}
+.stat-icon { font-size: 1.8rem; margin-bottom: 6px; }
+.stat-val { font-size: 1.6rem; font-weight: 800; color: var(--brown); line-height: 1; }
+.stat-label { font-size: 0.75rem; color: var(--brown-l); margin-top: 4px; }
+
+/* ── ORDER CARDS ── */
+.orders-filter { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 7px 14px; border: 2px solid var(--border); border-radius: 100px;
+  background: white; font-family: 'Manrope', sans-serif; font-size: 0.82rem;
+  font-weight: 600; cursor: pointer; color: var(--brown-m); transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active { border-color: var(--gold); background: var(--gold); color: white; }
+
+.orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.order-card {
+  background: white; border-radius: 18px; padding: 18px;
+  box-shadow: var(--shadow); border-left: 4px solid var(--border);
+  transition: transform 0.2s;
+}
+.order-card:hover { transform: translateY(-2px); }
+.order-card.status-new     { border-left-color: var(--blue); }
+.order-card.status-cooking { border-left-color: var(--orange); }
+.order-card.status-ready   { border-left-color: var(--green); }
+.order-card.status-done    { border-left-color: var(--brown-l); opacity: 0.7; }
+.order-card.status-cancelled { border-left-color: var(--red); opacity: 0.6; }
+
+.order-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.order-id { font-size: 0.78rem; color: var(--brown-l); }
+.order-num { font-weight: 800; font-size: 1.05rem; color: var(--brown); }
+.order-status {
+  font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 100px;
+}
+.status-new     .order-status { background: #D6EAF8; color: var(--blue); }
+.status-cooking .order-status { background: #FAE5D3; color: var(--orange); }
+.status-ready   .order-status { background: #D5F5E3; color: var(--green); }
+.status-done    .order-status { background: var(--border); color: var(--brown-m); }
+.status-cancelled .order-status { background: #FADBD8; color: var(--red); }
+
+.order-customer { font-size: 0.82rem; color: var(--brown-m); margin-bottom: 8px; }
+.order-items {
+  background: var(--cream); border-radius: 10px; padding: 10px 12px;
+  font-size: 0.85rem; color: var(--brown); margin-bottom: 10px; line-height: 1.6;
+}
+.order-footer { display: flex; justify-content: space-between; align-items: center; }
+.order-total { font-size: 1.1rem; font-weight: 800; color: var(--gold); }
+.order-pay { font-size: 0.75rem; color: var(--brown-l); }
+.order-time { font-size: 0.75rem; color: var(--brown-l); }
+
+.order-actions { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.act-btn {
+  padding: 7px 12px; border: none; border-radius: 9px;
+  font-family: 'Manrope', sans-serif; font-size: 0.78rem; font-weight: 700;
+  cursor: pointer; transition: all 0.15s; flex: 1; text-align: center;
+}
+.act-btn:hover { opacity: 0.85; transform: scale(0.98); }
+.btn-cook   { background: #FAE5D3; color: var(--orange); }
+.btn-ready  { background: #D5F5E3; color: var(--green); }
+.btn-done   { background: #D6EAF8; color: var(--blue); }
+.btn-cancel { background: #FADBD8; color: var(--red); }
+
+/* ── STOCK ── */
+.stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.stock-header h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--brown); }
+.add-btn {
+  background: var(--gold); color: white; border: none;
+  padding: 10px 20px; border-radius: 12px; font-family: 'Manrope', sans-serif;
+  font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+}
+.add-btn:hover { background: var(--gold-l); }
+
+.stock-cats { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.cat-btn {
+  padding: 6px 14px; border: 2px solid var(--border); border-radius: 100px;
+  background: white; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; color: var(--brown-m); transition: all 0.2s;
+}
+.cat-btn:hover, .cat-btn.active { border-color: var(--gold); background: var(--gold-pale); color: var(--brown); }
+
+.stock-table {
+  background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);
+}
+.stock-row {
+  display: grid; grid-template-columns: 1fr 80px 80px 120px;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  align-items: center; gap: 12px;
+}
+.stock-row:last-child { border-bottom: none; }
+.stock-row.header { background: var(--cream); font-size: 0.78rem; font-weight: 700; color: var(--brown-l); text-transform: uppercase; letter-spacing: 0.5px; }
+.stock-name { font-weight: 600; font-size: 0.9rem; }
+.stock-cat-tag { font-size: 0.7rem; color: var(--brown-l); margin-top: 2px; }
+.stock-qty { font-weight: 800; font-size: 1rem; text-align: center; }
+.qty-low { color: var(--red); }
+.qty-ok  { color: var(--green); }
+.qty-controls { display: flex; align-items: center; gap: 6px; }
+.qty-btn {
+  width: 30px; height: 30px; border: 2px solid var(--border); border-radius: 8px;
+  background: white; font-size: 1rem; font-weight: 700; cursor: pointer;
+  color: var(--brown); transition: all 0.15s; display: flex; align-items: center; justify-content: center;
+}
+.qty-btn:hover { border-color: var(--gold); color: var(--gold); }
+.qty-input {
+  width: 50px; text-align: center; padding: 6px 4px;
+  border: 2px solid var(--border); border-radius: 8px;
+  font-family: 'Manrope', sans-serif; font-size: 0.88rem; font-weight: 700;
+  outline: none;
+}
+.qty-input:focus { border-color: var(--gold); }
+.stock-price { font-weight: 700; color: var(--gold); text-align: center; }
+.low-alert {
+  background: #FADBD8; border: 1px solid #F1948A; border-radius: 12px;
+  padding: 12px 16px; margin-bottom: 16px; font-size: 0.85rem; color: var(--red);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px); z-index: 500;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white; border-radius: 20px; padding: 28px;
+  width: 100%; max-width: 400px;
+  animation: popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 16px; color: var(--brown); }
+.modal-field { margin-bottom: 14px; }
+.modal-field label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--brown-m); margin-bottom: 6px; }
+.modal-field input, .modal-field select, .modal-field textarea {
+  width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: 10px;
+  font-family: 'Manrope', sans-serif; font-size: 0.9rem; outline: none; transition: border 0.2s;
+}
+.modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { border-color: var(--gold); }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.modal-btn {
+  flex: 1; padding: 12px; border: none; border-radius: 12px;
+  font-family: 'Manrope', sans-serif; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.modal-btn.primary { background: var(--gold); color: white; }
+.modal-btn.primary:hover { background: var(--gold-l); }
+.modal-btn.secondary { background: var(--cream); color: var(--brown); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--brown); color: white; padding: 12px 24px; border-radius: 100px;
+  font-size: 0.88rem; font-weight: 600; z-index: 999;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── EMPTY STATE ── */
+.empty {
+  text-align: center; padding: 60px 20px; color: var(--brown-l);
+}
+.empty-icon { font-size: 3rem; margin-bottom: 12px; }
+.empty p { font-size: 0.9rem; }
+
+/* ── REFRESH ── */
+.refresh-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; font-size: 0.82rem; color: var(--brown-l);
+}
+.refresh-btn {
+  background: white; border: 2px solid var(--border); border-radius: 10px;
+  padding: 6px 14px; font-family: 'Manrope', sans-serif; font-size: 0.82rem;
+  font-weight: 600; cursor: pointer; color: var(--brown-m); transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.refresh-btn:hover { border-color: var(--gold); color: var(--gold); }
+.spinning { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+  .orders-grid { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .stock-row { grid-template-columns: 1fr 60px 100px; }
+  .stock-price { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">☕</div>
+    <h1>На сьомому небі</h1>
+    <p>Панель касира · Помісна Церква «Спасіння»</p>
+    <input type="password" class="login-input" id="passInput"
+           placeholder="Введіть пароль" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Увійти</button>
+    <div class="login-err" id="loginErr">❌ Невірний пароль</div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div class="app" id="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">☕</div>
+      <div>
+        <div class="topbar-title">На сьомому небі</div>
+        <div class="topbar-sub">Панель касира</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="role-badge" id="roleBadge">Касир</span>
+      <button class="logout-btn" onclick="logout()">Вийти</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('orders')" id="tab-orders">
+      📋 Замовлення <span class="tab-badge" id="badge-new">0</span>
+    </button>
+    <button class="tab" onclick="switchTab('stock')" id="tab-stock">
+      📦 Залишки <span class="tab-badge" id="badge-low" style="background:#D35400;">0</span>
+    </button>
+    <button class="tab" onclick="switchTab('stats')" id="tab-stats">
+      📊 Статистика
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ── ORDERS PANEL ── -->
+    <div class="panel active" id="panel-orders">
+      <div class="refresh-bar">
+        <span id="lastRefresh">Оновлено: щойно</span>
+        <button class="refresh-btn" onclick="loadOrders()">
+          <span id="refreshIcon">🔄</span> Оновити
+        </button>
+      </div>
+
+      <div class="orders-filter">
+        <button class="filter-btn active" onclick="filterOrders('all',this)">Всі</button>
+        <button class="filter-btn" onclick="filterOrders('new',this)">🔵 Нові</button>
+        <button class="filter-btn" onclick="filterOrders('cooking',this)">🟠 Готуються</button>
+        <button class="filter-btn" onclick="filterOrders('ready',this)">🟢 Готові</button>
+        <button class="filter-btn" onclick="filterOrders('done',this)">✅ Видані</button>
+      </div>
+
+      <div class="orders-grid" id="ordersGrid">
+        <div class="empty"><div class="empty-icon">📋</div><p>Завантаження...</p></div>
+      </div>
+    </div>
+
+    <!-- ── STOCK PANEL ── -->
+    <div class="panel" id="panel-stock">
+      <div class="stock-header">
+        <h2>📦 Залишки товарів</h2>
+        <button class="add-btn" onclick="openAddStock()">+ Додати позицію</button>
+      </div>
+
+      <div id="lowAlert" class="low-alert" style="display:none;">
+        ⚠️ <span id="lowAlertText">Деякі позиції закінчуються!</span>
+      </div>
+
+      <div class="stock-cats" id="stockCats">
+        <button class="cat-btn active" onclick="filterStock('all',this)">Всі</button>
+      </div>
+
+      <div class="stock-table">
+        <div class="stock-row header">
+          <div>Назва</div>
+          <div style="text-align:center">К-сть</div>
+          <div>Змінити</div>
+          <div style="text-align:center">Ціна</div>
+        </div>
+        <div id="stockBody">
+          <div class="empty"><div class="empty-icon">📦</div><p>Завантаження...</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STATS PANEL ── -->
+    <div class="panel" id="panel-stats">
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-val" id="s-orders">—</div><div class="stat-label">Замовлень сьогодні</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val" id="s-total">—</div><div class="stat-label">Сума (грн)</div></div>
+        <div class="stat-card"><div class="stat-icon">🔵</div><div class="stat-val" id="s-new">—</div><div class="stat-label">Нових</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="s-done">—</div><div class="stat-label">Видано</div></div>
+      </div>
+
+      <div style="background:white;border-radius:16px;padding:24px;box-shadow:var(--shadow);">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:16px;color:var(--brown);">
+          📅 Статистика на <span id="statsDate">—</span>
+        </h3>
+        <div id="statusBreakdown" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<!-- ── MODALS ── -->
+
+<!-- Add stock modal -->
+<div class="modal-overlay" id="addStockModal">
+  <div class="modal">
+    <h3>➕ Нова позиція</h3>
+    <div class="modal-field">
+      <label>Категорія</label>
+      <select id="ns-cat">
+        <option>Напої</option><option>Страви</option>
+        <option>Десерти</option><option>Солодощі</option><option>Інше</option>
+      </select>
+    </div>
+    <div class="modal-field"><label>Назва</label><input id="ns-name" placeholder="напр. Лате"></div>
+    <div class="modal-field"><label>Кількість</label><input id="ns-qty" type="number" value="10"></div>
+    <div class="modal-field"><label>Одиниця</label><input id="ns-unit" value="шт."></div>
+    <div class="modal-field"><label>Мін. кількість (попередження)</label><input id="ns-min" type="number" value="3"></div>
+    <div class="modal-field"><label>Ціна (грн)</label><input id="ns-price" type="number"></div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="closeModal('addStockModal')">Скасувати</button>
+      <button class="modal-btn primary" onclick="addStockItem()">Додати</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ CONFIG ══
+const API = 'https://script.google.com/macros/s/AKfycbxLs1IcjHxfb42tzYIQBHHmP2cINe1atuBJ_sx00xI-8iWHkbu8VoK54ZzH54wNjPuBmw/exec';
+
+// ══ STATE ══
+let role = '', allOrders = [], allStock = [], currentFilter = 'all', stockFilter = 'all';
+let refreshTimer = null;
+
+// ══ AUTH ══
+// Паролі зберігаються тут — якщо змінила в backend.gs, зміни і тут
+const PASSWORDS = {
+  'cafe2026':  'cashier',
+  'admin2026': 'admin',
+};
+
+async function doLogin() {
+  const pass = document.getElementById('passInput').value.trim();
+  if (!pass) return;
+
+  const errEl = document.getElementById('loginErr');
+  errEl.style.display = 'none';
+
+  // ── Перевіряємо пароль локально (швидко, без API) ──
+  if (PASSWORDS[pass]) {
+    role = PASSWORDS[pass];
+    loginSuccess();
+    // Після входу намагаємось завантажити дані з API
+    init();
+    return;
+  }
+
+  // ── Якщо не знайшли — пробуємо через API ──
+  try {
+    const r = await apiWithTimeout('auth', { password: pass }, 5000);
+    if (r && r.ok) {
+      role = r.role;
+      loginSuccess();
+      init();
+    } else {
+      errEl.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.style.display = 'block';
+  }
+}
+
+function loginSuccess() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('roleBadge').textContent =
+    role === 'admin' ? '👑 Адмін' : '👩‍💼 Касир';
+}
+
+// API з таймаутом
+async function apiWithTimeout(action, body, ms) {
+  return Promise.race([
+    api(action, body),
+    new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))
+  ]);
+}
+
+function logout() {
+  clearInterval(refreshTimer);
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('passInput').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+
+// ══ INIT ══
+function init() {
+  loadOrders();
+  loadStock();
+  loadStats();
+  // Автооновлення кожні 30 сек
+  refreshTimer = setInterval(() => {
+    if (document.getElementById('panel-orders').classList.contains('active')) loadOrders();
+  }, 30000);
+}
+
+function initDemo() {
+  // Демо-дані якщо немає API
+  allOrders = [
+    { id:'ORD001', time:'14:23', name:'Олена', phone:'', items:'Лате × 2\nХот-дог × 1', total:135, status:'new', payType:'cash', note:'' },
+    { id:'ORD002', time:'14:31', name:'Петро', phone:'', items:'Капучино × 1\nЕклери × 2', total:100, status:'cooking', payType:'online', note:'' },
+    { id:'ORD003', time:'14:45', name:'Марія', phone:'', items:'Донер × 1', total:100, status:'ready', payType:'cash', note:'' },
+    { id:'ORD004', time:'13:10', name:'Василь', phone:'', items:'Американо × 2', total:50, status:'done', payType:'cash', note:'' },
+  ];
+  allStock = [
+    { id:'ST001', category:'Напої', name:'Лате', qty:8, unit:'порц.', minQty:5, price:40 },
+    { id:'ST002', category:'Напої', name:'Капучино', qty:12, unit:'порц.', minQty:5, price:40 },
+    { id:'ST003', category:'Напої', name:'Еспресо', qty:20, unit:'порц.', minQty:5, price:25 },
+    { id:'ST004', category:'Страви', name:'Хот-дог', qty:2, unit:'шт.', minQty:3, price:55 },
+    { id:'ST005', category:'Страви', name:'Донер', qty:1, unit:'шт.', minQty:2, price:100 },
+    { id:'ST006', category:'Десерти', name:'Еклери', qty:15, unit:'шт.', minQty:3, price:30 },
+    { id:'ST007', category:'Десерти', name:'Мурашник', qty:8, unit:'шт.', minQty:3, price:30 },
+    { id:'ST008', category:'Десерти', name:'Трубочки', qty:10, unit:'шт.', minQty:3, price:35 },
+  ];
+  renderOrders();
+  renderStock();
+  renderStats({ orders:4, total:385, byStatus:{ new:1, cooking:1, ready:1, done:1, cancelled:0 }, date: new Date().toLocaleDateString('uk-UA') });
+}
+
+// ══ TABS ══
+function switchTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name === 'stats') loadStats();
+  if (name === 'stock') loadStock();
+}
+
+// ══ ORDERS ══
+async function loadOrders() {
+  const icon = document.getElementById('refreshIcon');
+  icon.classList.add('spinning');
+  try {
+    const data = await apiWithTimeout('getOrders', { status: 'all' }, 8000);
+    if (data && Array.isArray(data)) {
+      allOrders = data;
+    } else {
+      loadDemoOrders();
+    }
+  } catch(e) {
+    loadDemoOrders();
+  }
+  renderOrders();
+  document.getElementById('lastRefresh').textContent = 'Оновлено: ' + new Date().toLocaleTimeString('uk-UA');
+  icon.classList.remove('spinning');
+}
+
+function loadDemoOrders() {
+  if (allOrders.length === 0) {
+    allOrders = [
+      { id:'ORD001', time:'14:23', name:'Олена', phone:'', items:'Лате × 2\nХот-дог × 1', total:135, status:'new', payType:'cash', note:'' },
+      { id:'ORD002', time:'14:31', name:'Петро', phone:'', items:'Капучино × 1\nЕклери × 2', total:100, status:'cooking', payType:'online', note:'' },
+      { id:'ORD003', time:'14:45', name:'Марія', phone:'', items:'Донер × 1', total:100, status:'ready', payType:'cash', note:'' },
+    ];
+    showToast('ℹ️ Демо-режим — API не відповідає');
+  }
+}
+
+function filterOrders(status, btn) {
+  currentFilter = status;
+  document.querySelectorAll('.orders-filter .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderOrders();
+}
+
+function renderOrders() {
+  const filtered = currentFilter === 'all'
+    ? allOrders
+    : allOrders.filter(o => o.status === currentFilter);
+
+  const newCount = allOrders.filter(o => o.status === 'new').length;
+  document.getElementById('badge-new').textContent = newCount || '';
+
+  const grid = document.getElementById('ordersGrid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>Замовлень немає</p></div>';
+    return;
+  }
+
+  const statusLabels = { new:'🔵 Нове', cooking:'🟠 Готується', ready:'🟢 Готове', done:'✅ Видано', cancelled:'❌ Скасовано' };
+  const payLabels = { cash:'💵 Готівка', online:'💳 Онлайн' };
+
+  grid.innerHTML = filtered.map(o => `
+    <div class="order-card status-${o.status}">
+      <div class="order-head">
+        <div>
+          <div class="order-id">⏰ ${o.time}</div>
+          <div class="order-num">#${o.id}</div>
+        </div>
+        <div class="order-status">${statusLabels[o.status] || o.status}</div>
+      </div>
+      <div class="order-customer">👤 ${o.name || 'Анонім'} ${o.phone ? '· 📞 '+o.phone : ''}</div>
+      <div class="order-items">${(o.items||'').replace(/\n/g,'<br>')}</div>
+      <div class="order-footer">
+        <div class="order-total">${o.total} грн</div>
+        <div class="order-pay">${payLabels[o.payType] || ''}</div>
+      </div>
+      ${renderActions(o)}
+    </div>
+  `).join('');
+}
+
+function renderActions(o) {
+  if (o.status === 'done' || o.status === 'cancelled') return '';
+  let btns = '';
+  if (o.status === 'new')     btns += `<button class="act-btn btn-cook" onclick="changeStatus('${o.id}','cooking')">🍳 Готувати</button>`;
+  if (o.status === 'cooking') btns += `<button class="act-btn btn-ready" onclick="changeStatus('${o.id}','ready')">✅ Готово</button>`;
+  if (o.status === 'ready')   btns += `<button class="act-btn btn-done" onclick="changeStatus('${o.id}','done')">🤝 Видано</button>`;
+  if (o.status !== 'done')    btns += `<button class="act-btn btn-cancel" onclick="changeStatus('${o.id}','cancelled')">❌ Скасувати</button>`;
+  return `<div class="order-actions">${btns}</div>`;
+}
+
+async function changeStatus(id, status) {
+  try {
+    await api('updateOrder', { id, status });
+  } catch(e) {}
+  // Оновлюємо локально одразу
+  const o = allOrders.find(x => x.id === id);
+  if (o) o.status = status;
+  renderOrders();
+  const labels = { cooking:'🍳 Починаємо готувати!', ready:'✅ Замовлення готове!', done:'🤝 Видано клієнту', cancelled:'❌ Скасовано' };
+  showToast(labels[status] || 'Статус оновлено');
+}
+
+// ══ STOCK ══
+async function loadStock() {
+  try {
+    const data = await apiWithTimeout('getStock', {}, 8000);
+    if (data && Array.isArray(data) && data.length > 0) {
+      allStock = data;
+    } else {
+      loadDemoStock();
+    }
+  } catch(e) {
+    loadDemoStock();
+  }
+  renderStock();
+  checkLowStock();
+}
+
+function loadDemoStock() {
+  if (allStock.length === 0) {
+    allStock = [
+      { id:'ST001', category:'Напої', name:'Лате', qty:8, unit:'порц.', minQty:5, price:40 },
+      { id:'ST002', category:'Напої', name:'Капучино', qty:12, unit:'порц.', minQty:5, price:40 },
+      { id:'ST003', category:'Напої', name:'Еспресо', qty:20, unit:'порц.', minQty:5, price:25 },
+      { id:'ST004', category:'Страви', name:'Хот-дог', qty:2, unit:'шт.', minQty:3, price:55 },
+      { id:'ST005', category:'Страви', name:'Донер', qty:5, unit:'шт.', minQty:2, price:100 },
+      { id:'ST006', category:'Десерти', name:'Еклери', qty:15, unit:'шт.', minQty:3, price:30 },
+      { id:'ST007', category:'Десерти', name:'Мурашник', qty:8, unit:'шт.', minQty:3, price:30 },
+      { id:'ST008', category:'Десерти', name:'Трубочки', qty:10, unit:'шт.', minQty:3, price:35 },
+    ];
+  }
+}
+
+function filterStock(cat, btn) {
+  stockFilter = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStock();
+}
+
+function renderStock() {
+  // Категорії
+  const cats = [...new Set(allStock.map(s => s.category))];
+  const catBtns = document.getElementById('stockCats');
+  catBtns.innerHTML = `<button class="cat-btn ${stockFilter==='all'?'active':''}" onclick="filterStock('all',this)">Всі</button>` +
+    cats.map(c => `<button class="cat-btn ${stockFilter===c?'active':''}" onclick="filterStock('${c}',this)">${c}</button>`).join('');
+
+  const filtered = stockFilter === 'all' ? allStock : allStock.filter(s => s.category === stockFilter);
+  const body = document.getElementById('stockBody');
+
+  if (!filtered.length) {
+    body.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><p>Немає позицій</p></div>';
+    return;
+  }
+
+  body.innerHTML = filtered.map(s => {
+    const isLow = parseFloat(s.qty) <= parseFloat(s.minQty || 3);
+    return `
+      <div class="stock-row">
+        <div>
+          <div class="stock-name">${s.name} ${isLow ? '⚠️' : ''}</div>
+          <div class="stock-cat-tag">${s.category}</div>
+        </div>
+        <div class="stock-qty ${isLow ? 'qty-low' : 'qty-ok'}">${s.qty} <span style="font-size:0.7rem;font-weight:500;">${s.unit||''}</span></div>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="adjustQty('${s.id}',-1)">−</button>
+          <input class="qty-input" type="number" value="${s.qty}" id="qty-${s.id}"
+                 onchange="setQty('${s.id}',this.value)">
+          <button class="qty-btn" onclick="adjustQty('${s.id}',+1)">+</button>
+        </div>
+        <div class="stock-price">${s.price} грн</div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function adjustQty(id, delta) {
+  const item = allStock.find(s => s.id === id);
+  if (!item) return;
+  const newQty = Math.max(0, parseFloat(item.qty) + delta);
+  item.qty = newQty;
+  document.getElementById('qty-'+id).value = newQty;
+  renderStock();
+  try { await api('updateStock', { id, qty: newQty }); } catch(e) {}
+  showToast('✅ Залишок оновлено');
+}
+
+async function setQty(id, val) {
+  const item = allStock.find(s => s.id === id);
+  if (!item) return;
+  item.qty = Math.max(0, parseInt(val) || 0);
+  renderStock();
+  try { await api('updateStock', { id, qty: item.qty }); } catch(e) {}
+  showToast('✅ Залишок збережено');
+}
+
+function checkLowStock() {
+  const low = allStock.filter(s => parseFloat(s.qty) <= parseFloat(s.minQty || 3));
+  const badge = document.getElementById('badge-low');
+  badge.textContent = low.length || '';
+  badge.style.display = low.length ? 'inline-block' : 'none';
+  const alert = document.getElementById('lowAlert');
+  if (low.length) {
+    alert.style.display = 'flex';
+    document.getElementById('lowAlertText').textContent =
+      '⚠️ Закінчуються: ' + low.map(s => s.name + ' (' + s.qty + ' ' + (s.unit||'шт.') + ')').join(', ');
+  } else {
+    alert.style.display = 'none';
+  }
+}
+
+function openAddStock() { document.getElementById('addStockModal').classList.add('open'); }
+
+async function addStockItem() {
+  const item = {
+    id: 'ST' + Date.now(),
+    category: document.getElementById('ns-cat').value,
+    name:     document.getElementById('ns-name').value,
+    qty:      document.getElementById('ns-qty').value,
+    unit:     document.getElementById('ns-unit').value,
+    minQty:   document.getElementById('ns-min').value,
+    price:    document.getElementById('ns-price').value,
+  };
+  if (!item.name) { showToast('⚠️ Введіть назву'); return; }
+  allStock.push(item);
+  renderStock();
+  closeModal('addStockModal');
+  showToast('✅ Позицію додано');
+}
+
+// ══ STATS ══
+async function loadStats() {
+  try {
+    const data = await apiWithTimeout('getStats', {}, 8000);
+    if (data && data.orders !== undefined) {
+      renderStats(data);
+    } else {
+      renderStats({ orders:0, total:0, byStatus:{ new:0, cooking:0, ready:0, done:0, cancelled:0 }, date: new Date().toLocaleDateString('uk-UA') });
+    }
+  } catch(e) {
+    renderStats({ orders:0, total:0, byStatus:{ new:0, cooking:0, ready:0, done:0, cancelled:0 }, date: new Date().toLocaleDateString('uk-UA') });
+  }
+}
+
+function renderStats(data) {
+  document.getElementById('s-orders').textContent = data.orders || 0;
+  document.getElementById('s-total').textContent = (data.total || 0) + ' ₴';
+  document.getElementById('s-new').textContent = (data.byStatus && data.byStatus.new) || 0;
+  document.getElementById('s-done').textContent = (data.byStatus && data.byStatus.done) || 0;
+  document.getElementById('statsDate').textContent = data.date || '—';
+
+  const labels = { new:'🔵 Нових', cooking:'🟠 Готуються', ready:'🟢 Готових', done:'✅ Видано', cancelled:'❌ Скасовано' };
+  if (data.byStatus) {
+    document.getElementById('statusBreakdown').innerHTML =
+      Object.entries(data.byStatus).map(([k,v]) =>
+        `<div style="background:var(--cream);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:1.4rem;font-weight:800;color:var(--brown);">${v}</div>
+          <div style="font-size:0.78rem;color:var(--brown-l);margin-top:3px;">${labels[k]||k}</div>
+        </div>`
+      ).join('');
+  }
+}
+
+// ══ API ══
+async function api(action, body) {
+  if (!API || API.includes('ВСТАВИТИ')) {
+    throw new Error('No API configured - running in demo mode');
+  }
+  const r = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, ...body })
+  });
+  return r.json();
+}
+
+// ══ UTILS ══
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Закрити модалки по кліку на фон
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
